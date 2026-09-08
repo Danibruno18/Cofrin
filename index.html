@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0f766e" />
+<title>Guardar Dinheiro</title>
+<style>
+  :root{
+    --bg:#f4f7f6;
+    --panel:#ffffff;
+    --panel-2:#f9fbfa;
+    --ink:#0f2620;
+    --muted:#5f7a72;
+    --line:#e2ebe8;
+    --accent:#0f766e;
+    --accent-ink:#ffffff;
+    --accent-soft:#d4efe9;
+    --accent-soft-ink:#0b5a53;
+    --gold:#b7791f;
+    --danger:#b4443a;
+    --shadow:0 1px 2px rgba(16,40,34,.05), 0 8px 24px rgba(16,40,34,.06);
+    --radius:16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b1614;
+      --panel:#10201d;
+      --panel-2:#0d1b18;
+      --ink:#e7f2ef;
+      --muted:#8fa8a1;
+      --line:#1d322d;
+      --accent:#2dd4bf;
+      --accent-ink:#04211d;
+      --accent-soft:#12403a;
+      --accent-soft-ink:#7ff0e2;
+      --gold:#e2b25a;
+      --danger:#f0857a;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji",sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:20px 16px 64px}
+
+  header.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .logo{
+    width:44px;height:44px;flex:0 0 auto;border-radius:13px;
+    background:linear-gradient(150deg,var(--accent),#0891b2);
+    display:grid;place-items:center;color:#fff;font-size:22px;
+    box-shadow:var(--shadow);
+  }
+  .title h1{font-size:1.25rem;margin:0;letter-spacing:-.01em}
+  .title p{margin:0;color:var(--muted);font-size:.82rem}
+  .conn{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--muted);white-space:nowrap}
+  .dot{width:9px;height:9px;border-radius:50%;background:#c9d6d2;transition:background .3s}
+  .dot.ok{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.16)}
+  .dot.off{background:#e0aa2a;box-shadow:0 0 0 4px rgba(224,170,42,.16)}
+  .dot.err{background:var(--danger)}
+
+  /* Painel de resumo */
+  .summary{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 18px 16px;margin-bottom:16px;
+  }
+  .stats{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+  .stat .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+  .stat .big{font-size:1.9rem;font-weight:750;letter-spacing:-.02em;line-height:1.1;margin-top:2px}
+  .stat .sub{font-size:.78rem;color:var(--muted);margin-top:1px}
+  .stat.money .big{color:var(--accent)}
+  .bar{margin-top:14px;height:12px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden}
+  .bar > i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),#0891b2);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+  .bar-cap{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:6px}
+
+  /* Barra de ações */
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .search{
+    flex:1 1 180px;min-width:150px;display:flex;align-items:center;gap:8px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow);
+  }
+  .search input{border:0;background:transparent;color:var(--ink);font-size:.95rem;width:100%;outline:none}
+  .search svg{flex:0 0 auto;color:var(--muted)}
+  button{font-family:inherit;cursor:pointer}
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);border-radius:12px;padding:9px 13px;
+    font-size:.86rem;font-weight:600;box-shadow:var(--shadow);transition:transform .08s, border-color .2s, background .2s;
+  }
+  .btn:hover{border-color:var(--accent)}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .btn.ghost-danger{color:var(--danger)}
+  .btn.ghost-danger:hover{border-color:var(--danger)}
+
+  /* Grade */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px;
+  }
+  @media (max-width:520px){ .grid{grid-template-columns:repeat(5,1fr);gap:7px} }
+  .cell{
+    position:relative;aspect-ratio:1/1;border-radius:12px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);font-weight:650;font-size:.9rem;
+    display:grid;place-items:center;transition:transform .1s, background .18s, color .18s, border-color .18s, box-shadow .18s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cell:hover{border-color:var(--accent)}
+  .cell:active{transform:scale(.94)}
+  .cell.marked{
+    background:var(--accent);color:var(--accent-ink);border-color:transparent;
+    box-shadow:0 4px 12px rgba(15,118,110,.28);
+  }
+  .cell.marked::after{
+    content:"✓";position:absolute;top:3px;right:5px;font-size:.6rem;opacity:.85;
+  }
+  .cell.dim{opacity:.28}
+  .cell.flash{animation:flash .9s ease}
+  @keyframes flash{0%{box-shadow:0 0 0 0 rgba(15,118,110,.55)}100%{box-shadow:0 0 0 14px rgba(15,118,110,0)}}
+  .cell.pending{opacity:.6;cursor:progress}
+
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.75rem}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(8,20,17,.5);backdrop-filter:blur(2px);display:none;place-items:center;padding:20px;z-index:50}
+  .overlay.show{display:grid}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);max-width:360px;width:100%;padding:22px}
+  .modal h3{margin:0 0 6px;font-size:1.05rem}
+  .modal p{margin:0 0 18px;color:var(--muted);font-size:.9rem}
+  .modal .row{display:flex;gap:10px;justify-content:flex-end}
+
+  /* Toast */
+  .toast{
+    position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:.85rem;font-weight:600;
+    opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;z-index:60;box-shadow:var(--shadow);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo">💰</div>
+      <div class="title">
+        <h1>Guardar Dinheiro</h1>
+        <p>Marque os números que você já guardou</p>
+      </div>
+      <div class="conn"><span class="dot" id="dot"></span><span id="connLbl">conectando…</span></div>
+    </header>
+
+    <section class="summary">
+      <div class="stats">
+        <div class="stat money">
+          <div class="lbl">Total guardado</div>
+          <div class="big" id="money">R$ 0,00</div>
+          <div class="sub">de <span id="moneyMax">R$ 125.250,00</span> possíveis</div>
+        </div>
+        <div class="stat">
+          <div class="lbl">Números marcados</div>
+          <div class="big" id="count">0</div>
+          <div class="sub">de 500</div>
+        </div>
+      </div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="bar-cap"><span id="pct">0%</span><span id="remain">Faltam R$ 125.250,00</span></div>
+    </section>
+
+    <div class="toolbar">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" inputmode="numeric" placeholder="Buscar nº (1–500)" />
+      </label>
+      <button class="btn" id="randomBtn" title="Sugere um número ainda não marcado">🎲 Sortear</button>
+      <button class="btn ghost-danger" id="resetBtn">Zerar</button>
+    </div>
+
+    <div class="grid" id="grid" aria-label="Números de 1 a 500"></div>
+
+    <footer>
+      Seu progresso fica salvo automaticamente e acompanha você em qualquer aparelho.
+    </footer>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Zerar tudo?</h3>
+      <p>Isso vai desmarcar todos os números e voltar o total para R$ 0,00. Não dá para desfazer.</p>
+      <div class="row">
+        <button class="btn" id="cancelReset">Cancelar</button>
+        <button class="btn primary" id="confirmReset" style="background:var(--danger)">Sim, zerar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+// --- Configuração do banco (chaves públicas, seguras para o navegador) ---
+const SUPABASE_URL = "https://ddjhbtdbthvnsdaledtd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_vXKhz9T2vbgGfgWRhwXDUA_Tea00d32";
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { realtime: { params: { eventsPerSecond: 10 } } });
+
+const TOTAL = 500;
+const MAX_MONEY = TOTAL * (TOTAL + 1) / 2; // soma de 1..500 = 125.250
+const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+const marked = new Set();      // números marcados
+const cells = new Map();       // n -> elemento
+const pending = new Set();     // números com escrita em andamento
+
+// --- Monta a grade uma única vez ---
+const grid = document.getElementById("grid");
+const frag = document.createDocumentFragment();
+for (let n = 1; n <= TOTAL; n++) {
+  const b = document.createElement("button");
+  b.className = "cell";
+  b.type = "button";
+  b.textContent = n;
+  b.dataset.n = n;
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => toggle(n));
+  cells.set(n, b);
+  frag.appendChild(b);
+}
+grid.appendChild(frag);
+
+// --- Elementos de resumo ---
+const el = (id) => document.getElementById(id);
+el("moneyMax").textContent = brl.format(MAX_MONEY);
+
+function render() {
+  let sum = 0;
+  for (const n of marked) sum += n;
+  const count = marked.size;
+  el("money").textContent = brl.format(sum);
+  el("count").textContent = count;
+  const pct = MAX_MONEY ? (sum / MAX_MONEY) * 100 : 0;
+  el("barFill").style.width = pct + "%";
+  el("pct").textContent = pct.toFixed(pct < 10 ? 1 : 0) + "%";
+  el("remain").textContent = "Faltam " + brl.format(MAX_MONEY - sum);
+}
+
+function paint(n) {
+  const c = cells.get(n);
+  if (!c) return;
+  const on = marked.has(n);
+  c.classList.toggle("marked", on);
+  c.classList.toggle("pending", pending.has(n));
+  c.setAttribute("aria-pressed", on ? "true" : "false");
+}
+
+// --- Conexão / status ---
+function setConn(state, label) {
+  const d = el("dot");
+  d.className = "dot " + (state || "");
+  el("connLbl").textContent = label;
+}
+
+// --- Toast ---
+let toastT;
+function toast(msg) {
+  const t = el("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+// --- Toggle com atualização otimista ---
+async function toggle(n) {
+  if (pending.has(n)) return;
+  const wasMarked = marked.has(n);
+  pending.add(n);
+  // otimista
+  if (wasMarked) marked.delete(n); else marked.add(n);
+  paint(n); render();
+
+  try {
+    if (wasMarked) {
+      const { error } = await sb.from("marks").delete().eq("n", n);
+      if (error) throw error;
+    } else {
+      const { error } = await sb.from("marks").upsert({ n }, { onConflict: "n" });
+      if (error) throw error;
+    }
+  } catch (e) {
+    // reverte
+    if (wasMarked) marked.add(n); else marked.delete(n);
+    toast("Falha ao salvar o nº " + n + ". Tente de novo.");
+    console.error(e);
+  } finally {
+    pending.delete(n);
+    paint(n); render();
+  }
+}
+
+// --- Carrega estado inicial ---
+async function load() {
+  try {
+    setConn("off", "carregando…");
+    const { data, error } = await sb.from("marks").select("n");
+    if (error) throw error;
+    marked.clear();
+    for (const row of data) marked.add(row.n);
+    for (const n of cells.keys()) paint(n);
+    render();
+    setConn("ok", "sincronizado");
+  } catch (e) {
+    setConn("err", "sem conexão");
+    toast("Não consegui carregar o progresso.");
+    console.error(e);
+  }
+}
+
+// --- Realtime: espelha mudanças feitas em outros aparelhos ---
+function subscribe() {
+  sb.channel("marks-stream")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "marks" }, (p) => {
+      const n = p.new.n; if (!marked.has(n)) { marked.add(n); paint(n); render(); }
+    })
+    .on("postgres_changes", { event: "DELETE", schema: "public", table: "marks" }, (p) => {
+      const n = p.old.n; if (marked.has(n)) { marked.delete(n); paint(n); render(); }
+    })
+    .subscribe((status) => {
+      if (status === "SUBSCRIBED") setConn("ok", "sincronizado");
+      else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") setConn("err", "reconectando…");
+    });
+}
+
+// --- Busca / pular para número ---
+const search = el("search");
+function focusNumber(n) {
+  const c = cells.get(n);
+  if (!c) return;
+  c.scrollIntoView({ behavior: "smooth", block: "center" });
+  c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");
+}
+search.addEventListener("input", () => {
+  const q = search.value.trim();
+  if (!q) { for (const c of cells.values()) c.classList.remove("dim"); return; }
+  for (const [n, c] of cells) c.classList.toggle("dim", !String(n).startsWith(q));
+});
+search.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const n = parseInt(search.value, 10);
+    if (n >= 1 && n <= TOTAL) { focusNumber(n); }
+  }
+});
+
+// --- Sortear um número ainda não marcado ---
+el("randomBtn").addEventListener("click", () => {
+  const livres = [];
+  for (let n = 1; n <= TOTAL; n++) if (!marked.has(n)) livres.push(n);
+  if (!livres.length) { toast("Você já marcou todos! 🎉"); return; }
+  const n = livres[Math.floor(Math.random() * livres.length)];
+  focusNumber(n);
+  toast("Que tal guardar " + brl.format(n) + " (nº " + n + ")?");
+});
+
+// --- Zerar tudo ---
+const overlay = el("overlay");
+el("resetBtn").addEventListener("click", () => overlay.classList.add("show"));
+el("cancelReset").addEventListener("click", () => overlay.classList.remove("show"));
+overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.classList.remove("show"); });
+el("confirmReset").addEventListener("click", async () => {
+  overlay.classList.remove("show");
+  try {
+    const { error } = await sb.from("marks").delete().gte("n", 1);
+    if (error) throw error;
+    marked.clear();
+    for (const n of cells.keys()) paint(n);
+    render();
+    toast("Tudo zerado.");
+  } catch (e) {
+    toast("Não consegui zerar. Tente de novo.");
+    console.error(e);
+  }
+});
+
+// --- Início ---
+render();
+load().then(subscribe);
+</script>
+</body>
+</html>
