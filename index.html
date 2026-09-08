@@ -7,70 +7,79 @@
 <title>Guardar Dinheiro</title>
 <style>
   :root{
-    --bg:#f4f7f6;
-    --panel:#ffffff;
-    --panel-2:#f9fbfa;
-    --ink:#0f2620;
-    --muted:#5f7a72;
-    --line:#e2ebe8;
-    --accent:#0f766e;
-    --accent-ink:#ffffff;
-    --accent-soft:#d4efe9;
-    --accent-soft-ink:#0b5a53;
-    --gold:#b7791f;
-    --danger:#b4443a;
-    --shadow:0 1px 2px rgba(16,40,34,.05), 0 8px 24px rgba(16,40,34,.06);
-    --radius:16px;
+    --bg:#f4f7f6;--panel:#ffffff;--panel-2:#f9fbfa;--ink:#0f2620;--muted:#5f7a72;
+    --line:#e2ebe8;--accent:#0f766e;--accent-ink:#ffffff;--danger:#b4443a;
+    --shadow:0 1px 2px rgba(16,40,34,.05), 0 8px 24px rgba(16,40,34,.06);--radius:16px;
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --bg:#0b1614;
-      --panel:#10201d;
-      --panel-2:#0d1b18;
-      --ink:#e7f2ef;
-      --muted:#8fa8a1;
-      --line:#1d322d;
-      --accent:#2dd4bf;
-      --accent-ink:#04211d;
-      --accent-soft:#12403a;
-      --accent-soft-ink:#7ff0e2;
-      --gold:#e2b25a;
-      --danger:#f0857a;
+      --bg:#0b1614;--panel:#10201d;--panel-2:#0d1b18;--ink:#e7f2ef;--muted:#8fa8a1;
+      --line:#1d322d;--accent:#2dd4bf;--accent-ink:#04211d;--danger:#f0857a;
       --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
     }
   }
   *{box-sizing:border-box}
   html,body{margin:0}
   body{
-    background:var(--bg);
-    color:var(--ink);
+    background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji",sans-serif;
-    line-height:1.45;
-    -webkit-font-smoothing:antialiased;
+    line-height:1.45;-webkit-font-smoothing:antialiased;
     padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
   }
   .wrap{max-width:920px;margin:0 auto;padding:20px 16px 64px}
 
-  header.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-  .logo{
-    width:44px;height:44px;flex:0 0 auto;border-radius:13px;
-    background:linear-gradient(150deg,var(--accent),#0891b2);
-    display:grid;place-items:center;color:#fff;font-size:22px;
-    box-shadow:var(--shadow);
+  /* ---------- Tela de login ---------- */
+  .auth{min-height:100dvh;display:grid;place-items:center;padding:24px}
+  .card{
+    width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);
+    border-radius:20px;box-shadow:var(--shadow);padding:26px 24px;
   }
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(150deg,var(--accent),#0891b2);
+    display:grid;place-items:center;color:#fff;font-size:22px;box-shadow:var(--shadow)}
+  .brand h1{font-size:1.2rem;margin:0}
+  .brand p{margin:0;color:var(--muted);font-size:.8rem}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .field input{
+    width:100%;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);
+    border-radius:11px;padding:11px 12px;font-size:1rem;outline:none;transition:border-color .18s;
+  }
+  .field input:focus{border-color:var(--accent)}
+  .full{width:100%;justify-content:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);border-radius:12px;padding:11px 14px;
+    font-size:.92rem;font-weight:650;cursor:pointer;box-shadow:var(--shadow);
+    transition:transform .08s, border-color .2s, background .2s;font-family:inherit;
+  }
+  .btn:hover{border-color:var(--accent)}
+  .btn:active{transform:translateY(1px)}
+  .btn:disabled{opacity:.6;cursor:progress}
+  .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .switch{margin-top:14px;text-align:center;font-size:.85rem;color:var(--muted)}
+  .switch a{color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none}
+  .msg{margin-top:12px;font-size:.83rem;border-radius:11px;padding:10px 12px;display:none}
+  .msg.show{display:block}
+  .msg.err{background:rgba(180,68,58,.1);color:var(--danger)}
+  .msg.ok{background:rgba(15,118,110,.12);color:var(--accent)}
+
+  /* ---------- App ---------- */
+  header.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
   .title h1{font-size:1.25rem;margin:0;letter-spacing:-.01em}
   .title p{margin:0;color:var(--muted);font-size:.82rem}
-  .conn{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--muted);white-space:nowrap}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .conn{display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--muted);white-space:nowrap}
   .dot{width:9px;height:9px;border-radius:50%;background:#c9d6d2;transition:background .3s}
   .dot.ok{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.16)}
   .dot.off{background:#e0aa2a;box-shadow:0 0 0 4px rgba(224,170,42,.16)}
   .dot.err{background:var(--danger)}
+  .iconbtn{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:10px;
+    padding:7px 10px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit}
+  .iconbtn:hover{border-color:var(--danger);color:var(--danger)}
 
-  /* Painel de resumo */
-  .summary{
-    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-    box-shadow:var(--shadow);padding:18px 18px 16px;margin-bottom:16px;
-  }
+  .summary{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 18px 16px;margin-bottom:16px}
   .stats{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
   .stat .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
   .stat .big{font-size:1.9rem;font-weight:750;letter-spacing:-.02em;line-height:1.1;margin-top:2px}
@@ -80,46 +89,23 @@
   .bar > i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),#0891b2);transition:width .45s cubic-bezier(.2,.8,.2,1)}
   .bar-cap{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:6px}
 
-  /* Barra de ações */
   .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-  .search{
-    flex:1 1 180px;min-width:150px;display:flex;align-items:center;gap:8px;
-    background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow);
-  }
+  .search{flex:1 1 180px;min-width:150px;display:flex;align-items:center;gap:8px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow)}
   .search input{border:0;background:transparent;color:var(--ink);font-size:.95rem;width:100%;outline:none}
   .search svg{flex:0 0 auto;color:var(--muted)}
-  button{font-family:inherit;cursor:pointer}
-  .btn{
-    display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);
-    background:var(--panel);color:var(--ink);border-radius:12px;padding:9px 13px;
-    font-size:.86rem;font-weight:600;box-shadow:var(--shadow);transition:transform .08s, border-color .2s, background .2s;
-  }
-  .btn:hover{border-color:var(--accent)}
-  .btn:active{transform:translateY(1px)}
-  .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
   .btn.ghost-danger{color:var(--danger)}
   .btn.ghost-danger:hover{border-color:var(--danger)}
 
-  /* Grade */
-  .grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px;
-  }
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px}
   @media (max-width:520px){ .grid{grid-template-columns:repeat(5,1fr);gap:7px} }
-  .cell{
-    position:relative;aspect-ratio:1/1;border-radius:12px;border:1px solid var(--line);
-    background:var(--panel);color:var(--ink);font-weight:650;font-size:.9rem;
-    display:grid;place-items:center;transition:transform .1s, background .18s, color .18s, border-color .18s, box-shadow .18s;
-    -webkit-tap-highlight-color:transparent;
-  }
+  .cell{position:relative;aspect-ratio:1/1;border-radius:12px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);font-weight:650;font-size:.9rem;display:grid;place-items:center;
+    transition:transform .1s, background .18s, color .18s, border-color .18s, box-shadow .18s;-webkit-tap-highlight-color:transparent}
   .cell:hover{border-color:var(--accent)}
   .cell:active{transform:scale(.94)}
-  .cell.marked{
-    background:var(--accent);color:var(--accent-ink);border-color:transparent;
-    box-shadow:0 4px 12px rgba(15,118,110,.28);
-  }
-  .cell.marked::after{
-    content:"✓";position:absolute;top:3px;right:5px;font-size:.6rem;opacity:.85;
-  }
+  .cell.marked{background:var(--accent);color:var(--accent-ink);border-color:transparent;box-shadow:0 4px 12px rgba(15,118,110,.28)}
+  .cell.marked::after{content:"✓";position:absolute;top:3px;right:5px;font-size:.6rem;opacity:.85}
   .cell.dim{opacity:.28}
   .cell.flash{animation:flash .9s ease}
   @keyframes flash{0%{box-shadow:0 0 0 0 rgba(15,118,110,.55)}100%{box-shadow:0 0 0 14px rgba(15,118,110,0)}}
@@ -127,7 +113,6 @@
 
   footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.75rem}
 
-  /* Modal */
   .overlay{position:fixed;inset:0;background:rgba(8,20,17,.5);backdrop-filter:blur(2px);display:none;place-items:center;padding:20px;z-index:50}
   .overlay.show{display:grid}
   .modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);max-width:360px;width:100%;padding:22px}
@@ -135,24 +120,51 @@
   .modal p{margin:0 0 18px;color:var(--muted);font-size:.9rem}
   .modal .row{display:flex;gap:10px;justify-content:flex-end}
 
-  /* Toast */
-  .toast{
-    position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
     background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:.85rem;font-weight:600;
-    opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;z-index:60;box-shadow:var(--shadow);
-  }
+    opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;z-index:60;box-shadow:var(--shadow)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
-  <div class="wrap">
+
+  <!-- ================= LOGIN ================= -->
+  <div class="auth" id="authScreen" hidden>
+    <div class="card">
+      <div class="brand">
+        <div class="logo">💰</div>
+        <div><h1>Guardar Dinheiro</h1><p id="authSub">Entre para ver seu progresso</p></div>
+      </div>
+      <form id="authForm">
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" autocomplete="username" placeholder="voce@email.com" required />
+        </div>
+        <div class="field">
+          <label for="senha">Senha</label>
+          <input id="senha" type="password" autocomplete="current-password" placeholder="sua senha" minlength="6" required />
+        </div>
+        <button class="btn primary full" id="authBtn" type="submit">Entrar</button>
+      </form>
+      <div class="msg" id="authMsg"></div>
+      <div class="switch" id="authSwitch">
+        Ainda não tem conta? <a id="toSignup">Criar conta</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= APP ================= -->
+  <div class="wrap" id="app" hidden>
     <header class="top">
-      <div class="logo">💰</div>
+      <div class="logo" style="width:40px;height:40px;font-size:20px">💰</div>
       <div class="title">
         <h1>Guardar Dinheiro</h1>
         <p>Marque os números que você já guardou</p>
       </div>
-      <div class="conn"><span class="dot" id="dot"></span><span id="connLbl">conectando…</span></div>
+      <div class="top-right">
+        <div class="conn"><span class="dot" id="dot"></span><span id="connLbl">conectando…</span></div>
+        <button class="iconbtn" id="logoutBtn" title="Sair">Sair</button>
+      </div>
     </header>
 
     <section class="summary">
@@ -183,9 +195,7 @@
 
     <div class="grid" id="grid" aria-label="Números de 1 a 500"></div>
 
-    <footer>
-      Seu progresso fica salvo automaticamente e acompanha você em qualquer aparelho.
-    </footer>
+    <footer>Seu progresso fica salvo na sua conta e acompanha você em qualquer aparelho.</footer>
   </div>
 
   <div class="overlay" id="overlay">
@@ -204,86 +214,61 @@
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-// --- Configuração do banco (chaves públicas, seguras para o navegador) ---
 const SUPABASE_URL = "https://ddjhbtdbthvnsdaledtd.supabase.co";
 const SUPABASE_KEY = "sb_publishable_vXKhz9T2vbgGfgWRhwXDUA_Tea00d32";
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { realtime: { params: { eventsPerSecond: 10 } } });
 
 const TOTAL = 500;
-const MAX_MONEY = TOTAL * (TOTAL + 1) / 2; // soma de 1..500 = 125.250
+const MAX_MONEY = TOTAL * (TOTAL + 1) / 2;
 const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+const el = (id) => document.getElementById(id);
 
-const marked = new Set();      // números marcados
-const cells = new Map();       // n -> elemento
-const pending = new Set();     // números com escrita em andamento
+const marked = new Set();
+const cells = new Map();
+const pending = new Set();
+let channel = null;
+let started = false;
 
-// --- Monta a grade uma única vez ---
-const grid = document.getElementById("grid");
+/* ---------- Monta a grade uma vez ---------- */
+const grid = el("grid");
 const frag = document.createDocumentFragment();
 for (let n = 1; n <= TOTAL; n++) {
   const b = document.createElement("button");
-  b.className = "cell";
-  b.type = "button";
-  b.textContent = n;
-  b.dataset.n = n;
+  b.className = "cell"; b.type = "button"; b.textContent = n; b.dataset.n = n;
   b.setAttribute("aria-pressed", "false");
   b.addEventListener("click", () => toggle(n));
-  cells.set(n, b);
-  frag.appendChild(b);
+  cells.set(n, b); frag.appendChild(b);
 }
 grid.appendChild(frag);
-
-// --- Elementos de resumo ---
-const el = (id) => document.getElementById(id);
 el("moneyMax").textContent = brl.format(MAX_MONEY);
 
 function render() {
-  let sum = 0;
-  for (const n of marked) sum += n;
-  const count = marked.size;
+  let sum = 0; for (const n of marked) sum += n;
   el("money").textContent = brl.format(sum);
-  el("count").textContent = count;
+  el("count").textContent = marked.size;
   const pct = MAX_MONEY ? (sum / MAX_MONEY) * 100 : 0;
   el("barFill").style.width = pct + "%";
   el("pct").textContent = pct.toFixed(pct < 10 ? 1 : 0) + "%";
   el("remain").textContent = "Faltam " + brl.format(MAX_MONEY - sum);
 }
-
 function paint(n) {
-  const c = cells.get(n);
-  if (!c) return;
+  const c = cells.get(n); if (!c) return;
   const on = marked.has(n);
   c.classList.toggle("marked", on);
   c.classList.toggle("pending", pending.has(n));
   c.setAttribute("aria-pressed", on ? "true" : "false");
 }
+function setConn(state, label){ el("dot").className = "dot " + (state||""); el("connLbl").textContent = label; }
 
-// --- Conexão / status ---
-function setConn(state, label) {
-  const d = el("dot");
-  d.className = "dot " + (state || "");
-  el("connLbl").textContent = label;
-}
-
-// --- Toast ---
 let toastT;
-function toast(msg) {
-  const t = el("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove("show"), 2200);
-}
+function toast(msg){ const t=el("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2200); }
 
-// --- Toggle com atualização otimista ---
 async function toggle(n) {
   if (pending.has(n)) return;
   const wasMarked = marked.has(n);
   pending.add(n);
-  // otimista
   if (wasMarked) marked.delete(n); else marked.add(n);
   paint(n); render();
-
   try {
     if (wasMarked) {
       const { error } = await sb.from("marks").delete().eq("n", n);
@@ -293,18 +278,15 @@ async function toggle(n) {
       if (error) throw error;
     }
   } catch (e) {
-    // reverte
     if (wasMarked) marked.add(n); else marked.delete(n);
-    toast("Falha ao salvar o nº " + n + ". Tente de novo.");
+    toast("Falha ao salvar o nº " + n + ".");
     console.error(e);
   } finally {
-    pending.delete(n);
-    paint(n); render();
+    pending.delete(n); paint(n); render();
   }
 }
 
-// --- Carrega estado inicial ---
-async function load() {
+async function loadMarks() {
   try {
     setConn("off", "carregando…");
     const { data, error } = await sb.from("marks").select("n");
@@ -315,15 +297,11 @@ async function load() {
     render();
     setConn("ok", "sincronizado");
   } catch (e) {
-    setConn("err", "sem conexão");
-    toast("Não consegui carregar o progresso.");
-    console.error(e);
+    setConn("err", "sem conexão"); toast("Não consegui carregar o progresso."); console.error(e);
   }
 }
-
-// --- Realtime: espelha mudanças feitas em outros aparelhos ---
 function subscribe() {
-  sb.channel("marks-stream")
+  channel = sb.channel("marks-stream")
     .on("postgres_changes", { event: "INSERT", schema: "public", table: "marks" }, (p) => {
       const n = p.new.n; if (!marked.has(n)) { marked.add(n); paint(n); render(); }
     })
@@ -336,37 +314,23 @@ function subscribe() {
     });
 }
 
-// --- Busca / pular para número ---
+/* ---------- Ferramentas ---------- */
 const search = el("search");
-function focusNumber(n) {
-  const c = cells.get(n);
-  if (!c) return;
-  c.scrollIntoView({ behavior: "smooth", block: "center" });
-  c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");
-}
+function focusNumber(n){ const c=cells.get(n); if(!c) return; c.scrollIntoView({behavior:"smooth",block:"center"}); c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); }
 search.addEventListener("input", () => {
   const q = search.value.trim();
   if (!q) { for (const c of cells.values()) c.classList.remove("dim"); return; }
   for (const [n, c] of cells) c.classList.toggle("dim", !String(n).startsWith(q));
 });
 search.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const n = parseInt(search.value, 10);
-    if (n >= 1 && n <= TOTAL) { focusNumber(n); }
-  }
+  if (e.key === "Enter") { const n = parseInt(search.value,10); if (n>=1 && n<=TOTAL) focusNumber(n); }
 });
-
-// --- Sortear um número ainda não marcado ---
 el("randomBtn").addEventListener("click", () => {
-  const livres = [];
-  for (let n = 1; n <= TOTAL; n++) if (!marked.has(n)) livres.push(n);
-  if (!livres.length) { toast("Você já marcou todos! 🎉"); return; }
-  const n = livres[Math.floor(Math.random() * livres.length)];
-  focusNumber(n);
-  toast("Que tal guardar " + brl.format(n) + " (nº " + n + ")?");
+  const livres=[]; for (let n=1;n<=TOTAL;n++) if(!marked.has(n)) livres.push(n);
+  if(!livres.length){ toast("Você já marcou todos! 🎉"); return; }
+  const n=livres[Math.floor(Math.random()*livres.length)];
+  focusNumber(n); toast("Que tal guardar "+brl.format(n)+" (nº "+n+")?");
 });
-
-// --- Zerar tudo ---
 const overlay = el("overlay");
 el("resetBtn").addEventListener("click", () => overlay.classList.add("show"));
 el("cancelReset").addEventListener("click", () => overlay.classList.remove("show"));
@@ -376,19 +340,99 @@ el("confirmReset").addEventListener("click", async () => {
   try {
     const { error } = await sb.from("marks").delete().gte("n", 1);
     if (error) throw error;
-    marked.clear();
-    for (const n of cells.keys()) paint(n);
-    render();
-    toast("Tudo zerado.");
-  } catch (e) {
-    toast("Não consegui zerar. Tente de novo.");
-    console.error(e);
+    marked.clear(); for (const n of cells.keys()) paint(n); render(); toast("Tudo zerado.");
+  } catch (e) { toast("Não consegui zerar."); console.error(e); }
+});
+
+/* ---------- Autenticação ---------- */
+let mode = "login"; // "login" | "signup"
+const authForm = el("authForm");
+const authMsg = el("authMsg");
+function showMsg(kind, text){ authMsg.className = "msg show " + kind; authMsg.textContent = text; }
+function clearMsg(){ authMsg.className = "msg"; authMsg.textContent = ""; }
+
+function setMode(m){
+  mode = m; clearMsg();
+  if (m === "signup"){
+    el("authSub").textContent = "Crie sua conta para começar";
+    el("authBtn").textContent = "Criar conta";
+    el("senha").autocomplete = "new-password";
+    el("authSwitch").innerHTML = 'Já tem conta? <a id="toLogin">Entrar</a>';
+    el("toLogin").addEventListener("click", () => setMode("login"));
+  } else {
+    el("authSub").textContent = "Entre para ver seu progresso";
+    el("authBtn").textContent = "Entrar";
+    el("senha").autocomplete = "current-password";
+    el("authSwitch").innerHTML = 'Ainda não tem conta? <a id="toSignup">Criar conta</a>';
+    el("toSignup").addEventListener("click", () => setMode("signup"));
+  }
+}
+el("toSignup").addEventListener("click", () => setMode("signup"));
+
+authForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  clearMsg();
+  const email = el("email").value.trim();
+  const senha = el("senha").value;
+  const btn = el("authBtn");
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = mode === "signup" ? "Criando…" : "Entrando…";
+  try {
+    if (mode === "signup") {
+      const { data, error } = await sb.auth.signUp({ email, password: senha });
+      if (error) throw error;
+      if (data.session) {
+        // Confirmação de e-mail desligada: já entrou.
+        // onAuthStateChange cuida de abrir o app.
+      } else {
+        showMsg("ok", "Conta criada! Enviamos um e-mail de confirmação para " + email + ". Confirme e depois faça login.");
+        setMode("login");
+      }
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password: senha });
+      if (error) throw error;
+      // onAuthStateChange abre o app.
+    }
+  } catch (err) {
+    const m = (err && err.message) || "Erro. Tente de novo.";
+    if (/Invalid login/i.test(m)) showMsg("err", "E-mail ou senha incorretos.");
+    else if (/already registered|already been/i.test(m)) showMsg("err", "Esse e-mail já tem conta. Faça login.");
+    else if (/Email not confirmed/i.test(m)) showMsg("err", "Confirme seu e-mail pelo link que enviamos, depois entre.");
+    else showMsg("err", m);
+    console.error(err);
+  } finally {
+    btn.disabled = false; btn.textContent = original;
   }
 });
 
-// --- Início ---
-render();
-load().then(subscribe);
+el("logoutBtn").addEventListener("click", async () => { await sb.auth.signOut(); });
+
+function showAuth(){
+  el("app").hidden = true;
+  el("authScreen").hidden = false;
+}
+async function showApp(){
+  el("authScreen").hidden = true;
+  el("app").hidden = false;
+  if (!started){ started = true; render(); await loadMarks(); subscribe(); }
+}
+
+sb.auth.onAuthStateChange((event, session) => {
+  if (session && session.user) showApp();
+  else { // logout
+    if (channel){ sb.removeChannel(channel); channel = null; }
+    started = false; marked.clear();
+    for (const n of cells.keys()) paint(n); render();
+    showAuth();
+  }
+});
+
+// Estado inicial
+(async () => {
+  const { data } = await sb.auth.getSession();
+  if (data.session) showApp(); else showAuth();
+})();
 </script>
 </body>
 </html>
